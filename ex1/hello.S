@@ -14,6 +14,7 @@
 	cmp   $0x0, %al	       # Compare if 'al' register value is 0x0
 	je    halt               # Jump to halt
 	call  print_char	       # Call print_char function
+	call delay
 	add   $0x1, %bx	       # Increase index
 	jmp   loop	       
 
@@ -42,6 +43,13 @@
 	movb $0x0, %dh           # Row
 	movb $0x0, %dl           # Column
 	int $0x10                # Interrupt 10
+	ret
+	
+	delay:
+	movb $0x86, %ah
+	movw $0x0f, %cx
+	movw $0x4240, %dx
+	int $0x15
 	ret
 	
 	.fill 510 - (. - _start), 1, 0   # Fill the rest of the file with zeros
