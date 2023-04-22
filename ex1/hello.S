@@ -6,6 +6,8 @@
 
 	call set_color	       # Call set_color function
 	
+	call set_cursor	       # Call set_cursor function
+	 
 	movw  $0x0, %bx	       # Iteration index
 	loop:
 	movb  msg(%bx), %al      # Move char at index 'bx' to 'al' register 
@@ -32,6 +34,14 @@
 	movw $0x184F, %dx        # Select the whole screen	
 	movb $0x1e, %bh          # Select the background and text color 
 	int $0x10	       # Interrupt 10
+	ret
+	
+	set_cursor:
+	movb $0x2, %ah           # Set cursor position mode
+	movb $0x0, %bh 	       # Page number
+	movb $0x0, %dh           # Row
+	movb $0x0, %dl           # Column
+	int $0x10                # Interrupt 10
 	ret
 	
 	.fill 510 - (. - _start), 1, 0   # Fill the rest of the file with zeros
