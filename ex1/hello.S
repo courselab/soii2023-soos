@@ -4,6 +4,8 @@
 
 	_start:		       # Beginning of the program
 
+	call set_color	       # Call set_color function
+	
 	movw  $0x0, %bx	       # Iteration index
 	loop:
 	movb  msg(%bx), %al      # Move char at index 'bx' to 'al' register 
@@ -24,7 +26,14 @@
 	movb  $0xe, %ah	       # Teletype output mode
 	int   $0x10	       # Interrupt 10 
 	ret
-
+	
+	set_color:
+	movb $0x6, %ah	        
+	movw $0x184F, %dx        # Select the whole screen	
+	movb $0x1e, %bh          # Select the background and text color 
+	int $0x10	       # Interrupt 10
+	ret
+	
 	.fill 510 - (. - _start), 1, 0   # Fill the rest of the file with zeros
 	.word 0xaa55	               # Adding boot signature at the end of the file
 
