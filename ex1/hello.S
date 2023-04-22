@@ -1,0 +1,31 @@
+.code16                	       # Set 16-bit code
+
+.global _start	       	       # Default entry point
+
+	_start:		       # Beginning of the program
+
+	movw  $0x0, %bx	       # Iteration index
+	loop:
+	movb  msg(%bx), %al      # Move char at index 'bx' to 'al' register 
+	cmp   $0x0, %al	       # Compare if 'al' register value is 0x0
+	je    halt               # Jump to halt
+	call  print_char	       # Call print_char function
+	add   $0x1, %bx	       # Increase index
+	jmp   loop	       
+
+	halt:
+	hlt		       # Halt
+	jmp   halt	       # Safeguard
+
+	msg:
+	.string    "Ola mundo!"  # String
+	
+	print_char:
+	movb  $0xe, %ah	       # Teletype output mode
+	int   $0x10	       # Interrupt 10 
+	ret
+
+	.fill 510 - (. - _start), 1, 0   # Fill the rest of the file with zeros
+	.word 0xaa55	               # Adding boot signature at the end of the file
+
+
