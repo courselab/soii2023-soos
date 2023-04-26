@@ -30,7 +30,10 @@ loop:
 	cmp   $0x0, %al          # Compare if 'al' register value is 0x0
 	je    end                # Jump to end
 	call  print_char         # Call print_char function
-	call  delay
+	
+	movw  $0x03, %cx         # Interval in microseconds
+	call  delay              # Call delay function
+	
 	add   $0x1, %bx          # Increase index
 	jmp   loop
 end:
@@ -42,24 +45,22 @@ print_char:
 	ret
 
 set_color:
-	movb $0x6, %ah
-	movw $0x184F, %dx        # Select the whole screen
-	movb $0x1e, %bh          # Select the background and text color
-	int $0x10                # Interrupt 10
+	movb  $0x6, %ah
+	movw  $0x184F, %dx        # Select the whole screen
+	movb  $0x1e, %bh          # Select the background and text color
+	int   $0x10                # Interrupt 10
 	ret
 
 set_cursor:
-	movb $0x2, %ah           # Set cursor position mode
-	movb $0x0, %bh           # Page number
-	movb $0x0, %dl           # Column
-	int $0x10                # Interrupt 10
+	movb  $0x2, %ah           # Set cursor position mode
+	movb  $0x0, %bh           # Page number
+	movb  $0x0, %dl           # Column
+	int   $0x10                # Interrupt 10
 	ret
 
 delay:
-	movb $0x86, %ah
-	movw $0x0f, %cx
-	movw $0x4240, %dx
-	int $0x15
+	movb  $0x86, %ah		 # Wait mode
+	int   $0x15                # Interrupt 15
 	ret
 
 msg1:
