@@ -4,24 +4,28 @@
 
 _start:                          # Beginning of the program
 
-	call set_color           # Call set_color function
+	call  set_color          # Call set_color function
 
-	movb $0x0, %dh           # Defining row
-	call set_cursor          # Call set_cursor function
+	movb  $0x0, %dh          # Defining row
+	call  set_cursor         # Call set_cursor function
 
-	mov $msg1, %di           # Moving the message label address to di register
-	call print_msg           # Call print_msg function
+	mov   $msg1, %di         # Moving the message label address to di register
+	call  print_msg          # Call print_msg function
 
-	movb $0x1, %dh           # Defining row
-	call set_cursor          # Call set_cursor function
+	movb  $0x1, %dh          # Defining row
+	call  set_cursor         # Call set_cursor function
 
-	mov $msg2, %di           # Moving the message label address to di register
-	call print_msg           # Call print_msg function
+	mov   $msg2, %di         # Moving the message label address to di register
+	call  print_msg          # Call print_msg function
 
-halt:
+	movw  $0x0f, %cx         # Interval in microseconds
+	call  delay              # Call delay function
+
+	call  shutdown           # Call shutdown function
+
+halt:                            # If shutdown function dosen't work the program will be 'blocked' here
 	hlt                      # Halt
 	jmp   halt               # Safeguard
-
 
 print_msg:
 	movw  $0x0, %bx          # Iteration index
@@ -46,21 +50,28 @@ print_char:
 
 set_color:
 	movb  $0x6, %ah
-	movw  $0x184F, %dx        # Select the whole screen
-	movb  $0x1e, %bh          # Select the background and text color
-	int   $0x10                # Interrupt 10
+	movw  $0x184F, %dx       # Select the whole screen
+	movb  $0x1e, %bh         # Select the background and text color
+	int   $0x10              # Interrupt 10
 	ret
 
 set_cursor:
-	movb  $0x2, %ah           # Set cursor position mode
-	movb  $0x0, %bh           # Page number
-	movb  $0x0, %dl           # Column
-	int   $0x10                # Interrupt 10
+	movb  $0x2, %ah          # Set cursor position mode
+	movb  $0x0, %bh          # Page number
+	movb  $0x0, %dl          # Column
+	int   $0x10              # Interrupt 10
 	ret
 
 delay:
-	movb  $0x86, %ah		 # Wait mode
-	int   $0x15                # Interrupt 15
+	movb  $0x86, %ah         # Wait mode
+	int   $0x15              # Interrupt 15
+	ret
+
+shutdown:
+	movw  $0x5307, %ax       # Advanced Power Management v1.0+ - SET POWER STATE
+	movw  $0x0001, %bx       # Device ID
+	movw  $0x0003, %cx       # System state ID
+	int   $0x15              # Interrupt 15
 	ret
 
 msg1:
