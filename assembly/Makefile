@@ -27,3 +27,6 @@ bootloader.o : %.o : %.S
 
 clean:
 	rm -f *.bin *.o
+
+run: bootloader.bin
+	qemu-system-x86_64 bootloader.bin
