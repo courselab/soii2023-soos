@@ -1,6 +1,6 @@
 byte_list = []
 
-with open('hello-world.hex', 'r') as file:
+with open('hw.hex', 'r') as file:
     file_text = file.read()
     one_line_text = file_text.replace('\n', ' ')
     one_line_text = one_line_text.removesuffix(' ')
@@ -10,6 +10,6 @@ with open('hello-world.hex', 'r') as file:
         byte_list.append(int(opcode, 16))
 
 
-with open('hello-world.bin', 'wb') as file:
+with open('hw.bin', 'wb') as file:
     file.write(bytes(byte_list))
 
