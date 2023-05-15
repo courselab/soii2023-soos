@@ -1,7 +1,6 @@
 
 int __attribute__((fastcall, naked)) low_level_print(const char* string){
 	asm(
-
 "	call  set_color         \n"          
 "	movb  $0x0, %dh         \n"
 "	call  set_cursor        \n"

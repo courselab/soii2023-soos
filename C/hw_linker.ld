@@ -1,6 +1,4 @@
 OUTPUT_FORMAT(binary)
-
-
 SECTIONS{
 
 	. = 0x7c00;
@@ -9,7 +7,7 @@ SECTIONS{
 		*(.text)
 		*(.rodata)
 	}
-	. = 0x7c00 + 510
+	. = 0x7c00 + 510;
 	.signature :
 	{
 		BYTE(0x55)
