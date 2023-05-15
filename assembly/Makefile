@@ -16,10 +16,10 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-bootloader.bin : %.bin : %.o
+hw.bin : %.bin : %.o
 	ld -melf_i386 --oformat=binary -Ttext=0x7c00  $< -o $@
 
-bootloader.o : %.o : %.S
+hw.o : %.o : %.S
 	as --32 $< -o $@
 
 
@@ -28,5 +28,5 @@ bootloader.o : %.o : %.S
 clean:
 	rm -f *.bin *.o
 
-run: bootloader.bin
-	qemu-system-x86_64 bootloader.bin
+run: hw.bin
+	qemu-system-x86_64 hw.bin

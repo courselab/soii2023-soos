@@ -16,7 +16,7 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-hello-world.bin : hex2bin.py
+hw.bin : hex2bin.py
 	python3 $<
 
 .PHONY: clean
@@ -24,5 +24,5 @@ hello-world.bin : hex2bin.py
 clean:
 	rm -f *.bin
 
-run: hello-world.bin
+run: hw.bin
 	qemu-system-x86_64 $<
